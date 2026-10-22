@@ -179,12 +179,17 @@ function openSheet(o) {
 
   const drawDelivery = () => {
     const ship = $('#f_ship_needed').checked;
+    // other orders that already have an address, so one can be reused (e.g. a family shipping to one house)
+    const others = S.orders.filter(x => x.id !== o?.id && hasAddr(x)).sort((a, b) => a.name.localeCompare(b.name));
+    const useExisting = others.length ? `<label for="useAddr">Use an address from another order</label>
+      <select id="useAddr"><option value="">Choose an order…</option>${others.map(x => `<option value="${x.id}">${esc(x.name)} — ${esc(x.addr_line1)}, ${esc(x.addr_city)}</option>`).join('')}</select>` : '';
     $('#pickBox').innerHTML = ship ? '' : `<div class="tog"><span>Picked up</span><input class="sw" type="checkbox" id="f_picked_up" ${d.picked_up ? 'checked' : ''}></div>`;
     $('#shipBox').innerHTML = !ship ? '' : `
       <div class="addr-actions" style="margin:0 0 6px">
         <button class="btn small" id="shareLink">Send address link</button>
         <button class="btn small ghost" id="copyLink">Copy link</button></div>
       ${d.address_submitted_at ? `<p style="color:var(--ok);font-weight:800;margin:4px 0 8px">Address received ${fdate(d.address_submitted_at)}</p>` : '<p style="color:var(--muted);margin:4px 0 8px">Or type it in yourself:</p>'}
+      ${useExisting}
       ${fld('addr_name', 'Ship to name')}${fld('addr_line1', 'Street')}${fld('addr_line2', 'Apt / suite')}
       <div class="row3"><div><label for="f_addr_city">City</label><input id="f_addr_city" type="text" value="${esc(d.addr_city)}"></div>
       <div><label for="f_addr_state">State</label><input id="f_addr_state" type="text" value="${esc(d.addr_state)}" maxlength="2" autocapitalize="characters"></div>
@@ -197,6 +202,14 @@ function openSheet(o) {
       ${d.shipped_at ? `<p style="color:var(--muted);margin:8px 0 0">Shipped ${fdate(d.shipped_at)}${trackUrl(d) ? ` · <a href="${trackUrl(d)}" target="_blank" rel="noopener">Track package</a>` : ''}</p>` : ''}`;
     if (ship) {
       $('#copyAddr').onclick = () => copy(addrText(readForm()), 'Address copied');
+      const ua = $('#useAddr');
+      if (ua) ua.onchange = () => {
+        const src = S.orders.find(x => x.id === ua.value); if (!src) return;
+        const vals = { addr_name: src.addr_name || src.name, addr_line1: src.addr_line1, addr_line2: src.addr_line2, addr_city: src.addr_city, addr_state: src.addr_state, addr_zip: src.addr_zip };
+        Object.entries(vals).forEach(([k, v]) => { $('#f_' + k).value = v || ''; });
+        ua.value = '';
+        toast(`Address copied from ${src.name}. Tap Save to keep it.`);
+      };
       $('#copyLink').onclick = () => copy(linkFor(d), 'Link copied');
       $('#shareLink').onclick = () => {
         const text = `Hi ${d.name.split(' ')[0] || ''}! Where should I ship your shirt? Add your address here:`;
