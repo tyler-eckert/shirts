@@ -66,10 +66,10 @@ function badges(o) {
   return b.join('');
 }
 function card(o) {
-  const sizes = o.items.map(i => `<span class="sz">${esc(i.size)}${i.qty > 1 ? ' ×' + i.qty : ''}</span>`).join('') || '<span class="b info">No sizes yet</span>';
+  const sizes = o.items.map(i => `<span class="sz">${esc(i.size)}${i.qty > 1 ? ' ×' + i.qty : ''}</span>`).join('') || '<span class="sz none">no sizes</span>';
   return `<button class="card" data-id="${o.id}">
-    <div class="top"><span class="nm">${esc(o.name)}</span><span class="amt">${money(o.amount_due)}</span></div>
-    <div class="sizes">${sizes}</div><div class="badges">${badges(o)}</div></button>`;
+    <div class="top"><span class="nm">${esc(o.name)}</span><span class="sizes">${sizes}</span><span class="amt">${money(o.amount_due)}</span></div>
+    <div class="badges">${badges(o)}</div></button>`;
 }
 function render() {
   const O = S.orders;
@@ -124,7 +124,7 @@ function openSheet(o) {
   const isNew = !o;
   const d = o ? JSON.parse(JSON.stringify(o)) : { name: '', items: [], paid: false, ship_needed: true, amount_due: 0, shipped: false, picked_up: false };
   const counts = Object.fromEntries(d.items.map(i => [i.size, i.qty]));
-  let dirty = !isNew;
+  let dirty = false; // amount follows quantity/shipping until you type a custom amount
   const host = $('#sheetHost');
   const fld = (k, label, type = 'text', extra = '') => `<label for="f_${k}">${label}</label><input id="f_${k}" type="${type}" value="${esc(d[k])}" ${extra}>`;
 

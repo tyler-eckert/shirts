@@ -17,6 +17,8 @@ html{background:var(--brick);-webkit-text-size-adjust:100%}
 body{margin:0;min-height:100vh;background:var(--blush);color:var(--ink);
   font:16px/1.4 "Nunito",system-ui,-apple-system,sans-serif;padding-bottom:calc(32px + var(--safe-b))}
 button,input,select,textarea{font:inherit;color:inherit}
+input,select,textarea{font-size:16px}  /* 16px+ stops iOS zooming in when a field is tapped */
+html{touch-action:manipulation}          /* no double-tap zoom */
 [hidden]{display:none!important}
 
 /* Header: solid, no blur, no transparency, so iOS 26 glass bars can't tint or smear it */
@@ -38,25 +40,26 @@ button,input,select,textarea{font:inherit;color:inherit}
 .tabs button{flex:1;border:0;background:none;border-radius:999px;padding:9px;font-weight:800;color:var(--muted)}
 .tabs button.on{background:var(--red);color:#fff}
 
-.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:12px}
-.stat{background:var(--cream);border:2px solid var(--line);border-radius:14px;padding:8px 4px;text-align:center}
-.stat b{display:block;font:400 22px/1.1 "Rye",serif;color:var(--red)}
-.stat span{font-size:12px;color:var(--muted);font-weight:700}
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;margin-bottom:8px}
+.stat{background:var(--cream);border:2px solid var(--line);border-radius:12px;padding:4px 2px;text-align:center}
+.stat b{display:block;font:400 18px/1.1 "Rye",serif;color:var(--red)}
+.stat span{font-size:11px;color:var(--muted);font-weight:700}
 
-.chips{display:flex;gap:8px;overflow-x:auto;padding:2px 0 10px;scrollbar-width:none}
+.chips{display:flex;gap:6px;overflow-x:auto;padding:2px 0 6px;scrollbar-width:none}
 .chips::-webkit-scrollbar{display:none}
-.chip{flex:none;border:2px solid var(--line);background:var(--cream);border-radius:999px;padding:6px 14px;font-weight:800;color:var(--muted)}
+.chip{flex:none;border:2px solid var(--line);background:var(--cream);border-radius:999px;padding:4px 12px;font-weight:800;font-size:14px;color:var(--muted)}
 .chip.on{background:var(--gold);border-color:var(--gold);color:var(--ink)}
-.search{width:100%;border:2px solid var(--line);background:var(--cream);border-radius:14px;padding:11px 14px;margin-bottom:10px}
+.search{width:100%;border:2px solid var(--line);background:var(--cream);border-radius:14px;padding:8px 12px;margin-bottom:6px}
 
-.card{display:block;width:100%;text-align:left;background:var(--cream);border:2px solid var(--line);border-radius:18px;padding:12px 14px;margin-bottom:10px;cursor:pointer}
-.card .top{display:flex;justify-content:space-between;gap:8px;align-items:baseline}
-.card .nm{font-weight:900;font-size:18px}
-.card .amt{font-weight:800;color:var(--muted)}
-.sizes{display:flex;flex-wrap:wrap;gap:6px;margin:8px 0}
-.sz{background:var(--coral);color:#fff;font-weight:900;border-radius:8px;padding:2px 9px;font-size:14px;text-shadow:0 1px 0 rgba(0,0,0,.2)}
-.badges{display:flex;flex-wrap:wrap;gap:6px}
-.b{font-size:13px;font-weight:800;border-radius:999px;padding:3px 10px;border:2px solid transparent}
+.card{display:block;width:100%;text-align:left;background:var(--cream);border:2px solid var(--line);border-radius:14px;padding:7px 11px;margin-bottom:6px;cursor:pointer}
+.card .top{display:flex;align-items:center;gap:8px}
+.card .nm{font-weight:900;font-size:16px;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.card .amt{margin-left:auto;flex:none;font-weight:800;font-size:15px;color:var(--muted)}
+.sizes{display:flex;gap:4px;flex:none}
+.sz{background:var(--coral);color:#fff;font-weight:900;border-radius:7px;padding:1px 7px;font-size:13px;white-space:nowrap;text-shadow:0 1px 0 rgba(0,0,0,.2)}
+.sz.none{background:transparent;color:var(--muted);border:1px dashed var(--line);text-shadow:none;font-weight:700}
+.badges{display:flex;flex-wrap:wrap;gap:4px;margin-top:4px}
+.b{font-size:12px;font-weight:800;border-radius:999px;padding:1px 8px;border:2px solid transparent}
 .b.good{background:#DDF3E6;color:#0F5C35}
 .b.warn{background:#FFE9B8;color:#6B4300}
 .b.bad{background:#FFD3D0;color:#8A0E1A}
