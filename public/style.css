@@ -112,3 +112,4 @@ a{color:var(--red);font-weight:800}
 .hero{text-align:center;margin-bottom:18px}
 .hero h1{margin:0;font:400 42px/1 "Rye",serif;color:var(--red)}
 .hero p{margin:8px 0 0;font:400 22px "Kaushan Script",cursive;color:var(--brick)}
+.shirt{display:block;width:100%;height:auto;background:#fff;border:2px solid var(--line);border-radius:18px;margin:0 0 14px}
